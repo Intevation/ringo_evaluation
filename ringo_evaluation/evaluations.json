@@ -1,0 +1,8 @@
+{
+    "overview": {
+        "columns": [
+            {"name": "modul.label", "label": "Modul", "width": "250"},
+            {"name": "name", "label": "Evaluation"}
+        ]
+    }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <configuration xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="evaluation">
+  <source>
+    <!-- Define different entity types -->
+    <entity id="name" name="name" label="Name"/>
+    <entity id="modul" name="modul" label="Modul">
+      <renderer type="dropdown"/>
+      <help>Please select the modul for which the evaluation should available</help>
+    </entity>
+    <entity id="description" name="description" label="Description">
+      <renderer type="textarea"/>
+    </entity>
+  </source>
+  <form id="create" autocomplete="off" method="POST" action="" enctype="multipart/form-data">
+    <snippet ref="create_snippet"/>
+  </form>
+  <form id="update" autocomplete="off" method="POST" action="" enctype="multipart/form-data">
+    <snippet ref="create_snippet"/>
+  </form>
+  <form id="read" readonly="true">
+    <snippet ref="create_snippet"/>
+  </form>
+
+  <!-- Create-->
+  <snippet id="create_snippet">
+    <snippet ref="s1"/>
+  </snippet>
+
+  <!-- Role -->
+  <snippet id="s1">
+    <row>
+      <col width="9"><field ref="name"/></col>
+      <col width="3"><field ref="modul"/></col>
+    </row>
+    <row>
+      <col><field ref="description"/></col>
+    </row>
+  </snippet>
+</configuration>
