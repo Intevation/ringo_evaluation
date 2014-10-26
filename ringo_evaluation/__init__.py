@@ -3,8 +3,7 @@ from ringo.model.modul import ActionItem, ACTIONS
 from ringo.lib.extension import register_modul
 from ringo.lib.helpers import dynamic_import
 
-# Import models so that alembic is able to autogenerate migrations
-# scripts.
+import ringo_evaluation.views
 from ringo_evaluation.model import Extension
 
 log = logging.getLogger(__name__)
@@ -28,7 +27,7 @@ def includeme(config):
     """
     # Add custom action
     evaluate_action = ActionItem(name="Evaluate",
-                         url="evaluate",
+                         url="evaluate/{id}",
                          icon="glyphicon glyphicon-stats",
                          bundle=True)
     modul = register_modul(config, modul_config, [evaluate_action])
