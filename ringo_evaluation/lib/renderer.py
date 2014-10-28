@@ -45,8 +45,7 @@ class EvaluationDialogRenderer(DialogRenderer):
         evaluations = []
         modul = get_item_modul(self._request, self._item)
         for evaluation in modul.evaluations:
-            if modul.id == evaluation.modul_id:
-                evaluations.append((evaluation, evaluation.id))
+            evaluations.append((evaluation, evaluation.id))
         values = {"evaluations": evaluations}
         out.append(self.form.render(buttons=False, values=values))
         return "".join(out)
