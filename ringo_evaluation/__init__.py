@@ -15,7 +15,7 @@ modul_config = {
     "label_plural": "",
     "str_repr": "",
     "display": "",
-    "actions": ["list", "read", "update", "create", "delete", "evaluate"]
+    "actions": ["list", "read", "update", "create", "delete"]
 }
 
 
@@ -25,10 +25,5 @@ def includeme(config):
     :config: Dictionary with configuration of the new modul
 
     """
-    # Add custom action
-    evaluate_action = ActionItem(name="Evaluate",
-                         url="evaluate/{id}",
-                         icon="glyphicon glyphicon-stats",
-                         bundle=True)
-    modul = register_modul(config, modul_config, [evaluate_action])
+    modul = register_modul(config, modul_config)
     Extension._modul_id = modul.get_value("id")
