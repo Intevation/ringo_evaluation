@@ -1,8 +1,21 @@
 import sqlalchemy as sa
 from ringo.model import Base
 from ringo.model.base import BaseItem, BaseFactory
-from ringo.model.mixins import Owned, Meta
+from ringo.model.mixins import Mixin, Owned, Meta
+from ringo.model.modul import ActionItem
 
+class Evaluable(Mixin):
+    @classmethod
+    def get_mixin_actions(cls):
+        actions = []
+        # Add Evaluation action
+        action = ActionItem()
+        action.name = 'Evaluate'
+        action.url = 'evaluate/{id}'
+        action.icon = 'glyphicon glyphicon-stats'
+        action.bundle = True
+        actions.append(action)
+        return actions
 
 class ExtensionFactory(BaseFactory):
 
