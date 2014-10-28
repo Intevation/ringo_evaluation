@@ -6,23 +6,23 @@ from ringo.views.request import (
     handle_history,
     get_item_from_request
 )
-from ringo.views.base import web_action_view_mapping
-from ringo.views.base.list_ import bundle_request_handlers
+from ringo.views.base import set_web_action_view
+from ringo.views.base.list_ import set_bundle_action_handler
 
 
 def evaluate(request):
     handle_history(request)
     handle_params(request)
     #item = get_item_from_request(request)
-    rvalue = _handle_export_request(request, [])
+    rvalue = _handle_evaluation_request(request, [])
     return Response("OK")
 
 
-def _handle_export_request(request, items):
+def _handle_evaluation_request(request, items):
     return Response("OK")
     return {}
 
 
 # Register the view and request handlers.
-web_action_view_mapping["evaluate"] = evaluate
-bundle_request_handlers["evaluate"] = _handle_export_request
+set_web_action_view("evaluate", evaluate)
+set_bundle_action_handler("evaluate", _handle_evaluation_request)
