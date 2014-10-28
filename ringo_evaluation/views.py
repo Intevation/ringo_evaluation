@@ -4,8 +4,10 @@ from pyramid.response import Response
 from ringo.views.request import (
     handle_params,
     handle_history,
+    is_confirmed,
     get_item_from_request
 )
+from ringo_evaluation.lib.renderer import EvaluationDialogRenderer
 from ringo.views.base import set_web_action_view
 from ringo.views.base.list_ import set_bundle_action_handler
 
@@ -13,14 +15,37 @@ from ringo.views.base.list_ import set_bundle_action_handler
 def evaluate(request):
     handle_history(request)
     handle_params(request)
-    #item = get_item_from_request(request)
-    rvalue = _handle_evaluation_request(request, [])
-    return Response("OK")
+    item = get_item_from_request(request)
+    return _handle_evaluation_request(request, [])
 
 
 def _handle_evaluation_request(request, items):
-    return Response("OK")
-    return {}
+    clazz = request.context.__model__
+    renderer = EvaluationDialogRenderer(request, clazz)
+    form = renderer.form
+    if (request.method == 'POST'
+       and is_confirmed(request)
+       and form.validate(request.params)):
+        ## Setup exporter
+        #ef = form.data.get('format')
+        #if ef == "json":
+        #    exporter = JSONExporter(clazz)
+        #elif ef == "csv":
+        #    exporter = CSVExporter(clazz)
+        #export = exporter.perform(items)
+        # Build response
+        ef = "xls"
+        resp = request.response
+        resp.content_type = str('application/%s' % ef)
+        resp.content_disposition = 'attachment; filename=export.%s' % ef
+        resp.body = ""
+        return resp
+    else:
+        # FIXME: Get the ActionItem here and provide this in the Dialog to get
+        # the translation working (torsten) <2013-07-10 09:32>
+        rvalue = {}
+        rvalue['dialog'] = renderer.render(items)
+        return rvalue
 
 
 # Register the view and request handlers.
