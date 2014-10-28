@@ -18,7 +18,8 @@ setup(name='ringo_evaluation',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'ringo'
+          'ringo',
+          'ezodf'
       ],
       entry_points="""
       # -*- Entry points: -*-
