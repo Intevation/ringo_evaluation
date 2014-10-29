@@ -100,8 +100,12 @@ def _handle_evaluation_request(request, items):
         # 3. Write data into sheet
         sheetname = modul.get_label(plural=True)
         sheets = spreadsheet.sheets
-        sheets.append(ezodf.Table(sheetname))
-        sheet = sheets[sheetname]
+        try:
+            sheet = sheets[sheetname]
+        except:
+            sheets.append(ezodf.Table(sheetname))
+            sheet = sheets[sheetname]
+
 
         if len(export) > 0:
             fields = export[0].keys()
