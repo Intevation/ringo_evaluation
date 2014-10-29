@@ -36,6 +36,11 @@
     <row>
       <col><field ref="evaluations"/></col>
     </row>
+    <row>
+      <col>
+        <text bg="info">Please press STRG+SHIFT+F9 to trigger the calculation of the evaluation after opening the document.</text>
+      </col>
+    </row>
   </snippet>
 
   <!-- Role -->
