@@ -127,7 +127,11 @@ def _handle_evaluation_request(request, items):
         ef = "ods"
         resp = request.response
         resp.content_type = str('application/%s' % ef)
-        resp.content_disposition = 'attachment; filename=export.%s' % ef
+        ctime = get_local_datetime(datetime.utcnow())
+        filename = "%s_%s.%s" % (ctime.strftime("%Y-%m-%d-%H%M"),
+                                 sheetname.lower(),
+                                 ef)
+        resp.content_disposition = 'attachment; filename=%s' % filename
         resp.body = spreadsheet.tobytes()
         return resp
     else:
