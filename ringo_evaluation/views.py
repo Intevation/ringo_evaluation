@@ -95,7 +95,6 @@ def _handle_evaluation_request(request, items):
         # 2. Export data
         exporter = Exporter(clazz)
         export = exporter.perform(items)
-        print "export:", export
 
         # 3. Write data into sheet
         sheetname = modul.get_label(plural=True)
