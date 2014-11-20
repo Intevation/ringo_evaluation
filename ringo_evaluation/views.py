@@ -96,8 +96,8 @@ def _handle_evaluation_request(request, items):
         exporter = Exporter(clazz)
         export = exporter.perform(items)
 
-        # 3. Write data into sheet
-        sheetname = modul.get_label(plural=True)
+        # 4. Create sheets per relation
+        sheetname = modul.name
         sheets = spreadsheet.sheets
         try:
             sheet = sheets[sheetname]
