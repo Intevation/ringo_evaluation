@@ -105,9 +105,8 @@ def _handle_evaluation_request(request, items):
             sheets.append(ezodf.Table(sheetname))
             sheet = sheets[sheetname]
 
-
         if len(export) > 0:
-            fields = export[0].keys()
+            fields = sorted(export[0].keys())
             sheet.reset(size=(len(export)+1, len(fields)))
             for x, field in enumerate(fields):
                 cell = sheet[0,x]
