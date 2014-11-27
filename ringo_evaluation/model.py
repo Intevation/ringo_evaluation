@@ -39,6 +39,7 @@ class Extension(Owned, Meta, BaseItem, Base):
     name = sa.Column('name', sa.Text)
     data = sa.Column('data', sa.LargeBinary)
     description = sa.Column('description', sa.Text)
+    configuration = sa.Column('configuration', sa.Text)
     size = sa.Column('size', sa.Integer)
     mime = sa.Column('mime', sa.Text)
 

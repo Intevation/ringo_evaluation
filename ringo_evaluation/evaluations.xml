@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <configuration xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="evaluation">
   <source>
     <!-- Define different entity types -->
-    <entity id="name" name="name" label="Name"/>
+    <entity id="name" name="name" label="Name" required="true"/>
     <entity id="modul" name="modul" label="Modul">
       <renderer type="dropdown"/>
       <help>Please select the modul for which the evaluation should available</help>
@@ -13,6 +13,10 @@
     <entity id="evaluations" name="evaluations" label="Evaluations">
       <options value="evaluations"/>
       <renderer type="dropdown"/>
+    </entity>
+    <entity id="configuration" name="configuration" label="Configuration">
+      <help>The configuration determines which fields and relations will be included in the evaluation export. If left blank the evaluation will be built with all fields of the evaluated items. When creating a new evaluation the configuration will be filled witch the current list of fields.</help>
+      <renderer type="textarea"/>
     </entity>
   </source>
   <form id="create" autocomplete="off" method="POST" action="" enctype="multipart/form-data">
@@ -51,6 +55,9 @@
     </row>
     <row>
       <col><field ref="description"/></col>
+    </row>
+    <row>
+      <col><field ref="configuration"/></col>
     </row>
     <row>
       <col><field ref="file"/></col>
