@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <configuration xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="evaluation">
   <source>
     <!-- Define different entity types -->
+    <entity id="_converter" name="_converter">
+      <renderer type="hidden"/>
+    </entity>
     <entity id="name" name="name" label="Name" required="true"/>
     <entity id="modul" name="modul" label="Modul">
       <renderer type="dropdown"/>
@@ -12,6 +15,14 @@
     </entity>
     <entity id="evaluations" name="evaluations" label="Evaluations">
       <options value="evaluations"/>
+      <renderer type="dropdown"/>
+    </entity>
+    <entity id="exportformat" name="exportformat" label="Export as">
+      <options>
+        <option value="ods">ODS (Default)</option>
+        <option value="pdf">PDF</option>
+        <option value="xls">XLS</option>
+      </options>
       <renderer type="dropdown"/>
     </entity>
     <entity id="configuration" name="configuration" label="Configuration">
@@ -38,13 +49,29 @@
   </snippet>
   <snippet id="dialog_snippet">
     <row>
-      <col><field ref="evaluations"/></col>
-    </row>
-    <row>
+      <col><field ref="_converter"/><field ref="evaluations"/></col>
       <col>
-        <text bg="info">Please press STRG+SHIFT+F9 to trigger the calculation of the evaluation after opening the document.</text>
+        <if expr="$_converter == 'True'">
+          <row>
+            <col>
+              <field ref="exportformat"/>
+            </col>
+          </row>
+          <row>
+            <col>
+              <text bg="info">PDF evaluations only include the results of the evaluation. Data is not included.</text>
+            </col>
+          </row>
+        </if>
       </col>
     </row>
+    <if expr="$_converter != 'True'">
+      <row>
+        <col>
+          <text bg="info">Please Press STRG+SHIFT+F9 to trigger the recalculation of the evaluation after opening the document</text>
+        </col>
+      </row>
+    </if>
   </snippet>
 
   <!-- Role -->
