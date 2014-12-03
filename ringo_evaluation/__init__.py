@@ -1,5 +1,7 @@
 import logging
+from pyramid.i18n import TranslationStringFactory
 from ringo.model.modul import ActionItem, ACTIONS
+from ringo.lib.i18n import translators
 from ringo.lib.extension import register_modul
 from ringo.lib.helpers import dynamic_import
 
@@ -27,3 +29,5 @@ def includeme(config):
     """
     modul = register_modul(config, modul_config)
     Extension._modul_id = modul.get_value("id")
+    translators.append(TranslationStringFactory('ringo_evaluation'))
+    config.add_translation_dirs('ringo_evaluation:locale/')

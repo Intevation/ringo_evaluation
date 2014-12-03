@@ -18,10 +18,20 @@ setup(name='ringo_evaluation',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'ringo>=17.0',
+          'ringo>=0.17.0',
           'ezodf'
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [babel.extractors]
+      tableconfig = ringo.lib.i18n:extract_i18n_tableconfig
+      formconfig = formbar.i18n:extract_i18n_formconfig
       """,
+      message_extractors = {'ringo_evaluation': [
+            ('**.py', 'python', None),
+            ('templates/**.html', 'mako', None),
+            ('templates/**.mako', 'mako', None),
+            ('**.xml', 'formconfig', None),
+            ('**.json', 'tableconfig', None),
+            ('static/**', 'ignore', None)]},
       )
