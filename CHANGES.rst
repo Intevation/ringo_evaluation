@@ -2,6 +2,7 @@
 ---
 - Added conversion of the evaluation into PDF or XLS if ringos Converter is
   available.
+- Added translation
 
 0.1
 ---
