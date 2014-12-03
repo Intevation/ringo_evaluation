@@ -7,6 +7,7 @@ from formbar.form import Form
 
 from ringo.lib.renderer.dialogs import DialogRenderer
 from ringo.lib.helpers import get_item_modul
+from ringo.lib.odfconv import converter
 from ringo.lib.form import get_path_to_form_config
 
 base_dir = pkg_resources.get_distribution("ringo_evaluation").location
@@ -47,5 +48,6 @@ class EvaluationDialogRenderer(DialogRenderer):
         for evaluation in modul.evaluations:
             evaluations.append((evaluation, evaluation.id))
         values = {"evaluations": evaluations}
+        values["_converter"] = converter.is_available()
         out.append(self.form.render(buttons=False, values=values))
         return "".join(out)
