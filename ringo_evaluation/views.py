@@ -4,6 +4,7 @@ import os
 import logging
 import ezodf
 import mimetypes
+from tempfile import NamedTemporaryFile
 from datetime import datetime
 from ringo.views.request import (
     handle_params,
@@ -14,6 +15,7 @@ from ringo.views.request import (
 from ringo.lib.imexport import RecursiveRelationExporter
 from ringo.lib.helpers.appinfo import get_app_location
 from ringo.lib.helpers.format import get_local_datetime
+from ringo.lib.odfconv import converter
 from ringo.views.base.create import create
 from ringo.views.base.update import update
 from ringo.views.base import set_web_action_view
@@ -23,6 +25,19 @@ from ringo_evaluation.model import Extension
 
 log = logging.getLogger(__name__)
 
+def _convert_spreadsheet(spreadsheet, format):
+    data = converter.convert(spreadsheet.tobytes(), "ods", update=True)
+    if format == "pdf":
+        tmp = NamedTemporaryFile()
+        tmp.write(data)
+        tmp.seek(0)
+        dummy = ezodf.opendoc(tmp.name)
+        for i in range(1, len(dummy.sheets)):
+            del dummy.sheets[i]
+        data = converter.convert(dummy.tobytes(), "ods", update=False)
+        tmp.close()
+    data = converter.convert(data, format, update=False)
+    return data
 
 def _get_upload_dir(appname):
     applocation = get_app_location(appname)
@@ -90,6 +105,7 @@ def _handle_evaluation_request(request, items):
         # 1. Load evaluation file
         factory = Extension.get_item_factory()
         evaluation = factory.load(form.data["evaluations"])
+        exportformat = form.data.get("exportformat", "ods")
         export_config = evaluation.configuration
         spreadsheet = ezodf.opendoc(evaluation.data)
 
@@ -113,16 +129,21 @@ def _handle_evaluation_request(request, items):
                 sheet = sheets[sheetname]
             _fill_sheet(sheet, data, relation_config[relation])
 
-        # 4. Build response
-        ef = "ods"
+        # 4. Convert and recalcualte the spreadsheet
+        if converter.is_available():
+            spreadsheet_data = _convert_spreadsheet(spreadsheet, exportformat)
+        else:
+            spreadsheet_data = spreadsheet.tobytes()
+
+        # 5. Build response
         resp = request.response
-        resp.content_type = str('application/%s' % ef)
+        resp.content_type = str('application/%s' % exportformat)
         ctime = get_local_datetime(datetime.utcnow())
         filename = "%s_%s.%s" % (ctime.strftime("%Y-%m-%d-%H%M"),
                                  sheetname.lower(),
-                                 ef)
+                                 exportformat)
         resp.content_disposition = 'attachment; filename=%s' % filename
-        resp.body = spreadsheet.tobytes()
+        resp.body = spreadsheet_data
         return resp
     else:
         # FIXME: Get the ActionItem here and provide this in the Dialog to get
