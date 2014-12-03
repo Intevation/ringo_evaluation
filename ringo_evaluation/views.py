@@ -15,7 +15,7 @@ from ringo.views.request import (
 from ringo.lib.imexport import RecursiveRelationExporter
 from ringo.lib.helpers.appinfo import get_app_location
 from ringo.lib.helpers.format import get_local_datetime
-from ringo.lib.odfconv import converter
+from ringo.lib.odfconv import get_converter
 from ringo.views.base.create import create
 from ringo.views.base.update import update
 from ringo.views.base import set_web_action_view
@@ -26,6 +26,7 @@ from ringo_evaluation.model import Extension
 log = logging.getLogger(__name__)
 
 def _convert_spreadsheet(spreadsheet, format):
+    converter = get_converter()
     data = converter.convert(spreadsheet.tobytes(), "ods", update=True)
     if format == "pdf":
         tmp = NamedTemporaryFile()
@@ -130,6 +131,7 @@ def _handle_evaluation_request(request, items):
             _fill_sheet(sheet, data, relation_config[relation])
 
         # 4. Convert and recalcualte the spreadsheet
+        converter = get_converter()
         if converter.is_available():
             spreadsheet_data = _convert_spreadsheet(spreadsheet, exportformat)
         else:

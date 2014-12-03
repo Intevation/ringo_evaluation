@@ -7,7 +7,7 @@ from formbar.form import Form
 
 from ringo.lib.renderer.dialogs import DialogRenderer
 from ringo.lib.helpers import get_item_modul
-from ringo.lib.odfconv import converter
+from ringo.lib.odfconv import get_converter
 from ringo.lib.form import get_path_to_form_config
 
 base_dir = pkg_resources.get_distribution("ringo_evaluation").location
@@ -45,6 +45,7 @@ class EvaluationDialogRenderer(DialogRenderer):
         # Collect all available evaluations and provide the evaluations
         # for this modul to the form while rendering.
         evaluations = []
+        converter = get_converter()
         modul = get_item_modul(self._request, self._item)
         for evaluation in modul.evaluations:
             evaluations.append((evaluation, evaluation.id))
