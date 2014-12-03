@@ -25,7 +25,8 @@ class EvaluationDialogRenderer(DialogRenderer):
         config = Config(load(get_path_to_form_config('evaluations.xml', 'ringo_evaluation', location=".")))
         form_config = config.get_form('dialog')
         self.form = Form(form_config,
-                         csrf_token=self._request.session.get_csrf_token())
+                         csrf_token=self._request.session.get_csrf_token(),
+                         translate=request.translate)
 
     def render(self, items):
         values = {}
