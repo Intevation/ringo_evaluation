@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1'
+version = '0.2'
 
 setup(name='ringo_evaluation',
       version=version,
@@ -18,7 +18,7 @@ setup(name='ringo_evaluation',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'ringo',
+          'ringo>=17.0',
           'ezodf'
       ],
       entry_points="""
