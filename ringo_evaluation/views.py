@@ -34,7 +34,7 @@ def _convert_spreadsheet(spreadsheet, format):
         tmp.seek(0)
         dummy = ezodf.opendoc(tmp.name)
         for i in range(1, len(dummy.sheets)):
-            del dummy.sheets[i]
+            del dummy.sheets[-1]
         data = converter.convert(dummy.tobytes(), "ods", update=False)
         tmp.close()
     data = converter.convert(data, format, update=False)
