@@ -170,7 +170,10 @@ def _fill_sheet(sheet, data, fields):
                 cell.set_value(item[field] or "")
 
 # Register the view and request handlers.
+# Overwrite create and update view specificially for the evaluation
+# module
+set_web_action_view("create", create_, "evaluation")
+set_web_action_view("update", update_, "evaluation")
+# Add generic evaluation view for all modules
 set_web_action_view("evaluate", evaluate)
-set_web_action_view("create", create_)
-set_web_action_view("update", update_)
 set_bundle_action_handler("evaluate", _handle_evaluation_request)
