@@ -42,6 +42,7 @@ class EvaluationDialogRenderer(DialogRenderer):
         values['ok_url'] = self._request.current_route_path()
         values['_'] = self._request.translate
         values['cancel_url'] = self._request.referrer
+        values['evalurl'] = self._request.application_url+eval_url
         return self.template.render(**values)
 
     def _render_body(self):
