@@ -7,6 +7,7 @@ from formbar.form import Form
 
 from ringo.lib.renderer.dialogs import DialogRenderer
 from ringo.lib.helpers import get_item_modul
+from ringo.views.helpers import eval_url
 from ringo.lib.odfconv import get_converter
 from ringo.lib.form import get_path_to_form_config
 
@@ -24,9 +25,12 @@ class EvaluationDialogRenderer(DialogRenderer):
         self.template = template_lookup.get_template("internal/evaluation.mako")
         config = Config(load(get_path_to_form_config('evaluations.xml', 'ringo_evaluation', location=".")))
         form_config = config.get_form('dialog')
+        url_prefix = request.application_url
         self.form = Form(form_config,
                          csrf_token=self._request.session.get_csrf_token(),
-                         translate=request.translate)
+                         translate=request.translate,
+                         eval_url=eval_url,
+                         url_prefix=url_prefix)
 
     def render(self, items):
         values = {}
