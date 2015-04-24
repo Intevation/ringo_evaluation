@@ -68,8 +68,11 @@ def save_file(request, item):
 
         request.POST.get('file').file.seek(0)
         data = request.POST.get('file').file.read()
-        filename = os.path.join(uploaddir,
-                                request.POST.get('file').filename)
+        # Filname must be encoded as str as tem.data is byte and
+        # automatic conversion from unicode to byte fails at least for
+        # postgres.
+        filename = request.POST.get('file').filename.encode('ascii', 'ignore')
+        filename = os.path.join(uploaddir, filename)
         item.data = filename
         item.size = len(data)
         item.mime = mimetypes.guess_type(filename)[0]
