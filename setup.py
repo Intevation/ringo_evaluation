@@ -19,7 +19,8 @@ setup(name='ringo_evaluation',
       zip_safe=False,
       install_requires=[
           'ringo>=0.17.0',
-          'ezodf'
+          'ezodf',
+          'py3o.renderers.pyuno'
       ],
       entry_points="""
       # -*- Entry points: -*-
