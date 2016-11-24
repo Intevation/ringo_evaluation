@@ -49,29 +49,13 @@
   </snippet>
   <snippet id="dialog_snippet">
     <row>
-      <col><field ref="_converter"/><field ref="evaluations"/></col>
+      <col><field ref="evaluations"/></col>
+    </row>
+    <row>
       <col>
-        <if expr="$_converter == 'True'">
-          <row>
-            <col>
-              <field ref="exportformat"/>
-            </col>
-          </row>
-          <row>
-            <col>
-              <text bg="info">PDF evaluations only include the results of the evaluation. Data is not included.</text>
-            </col>
-          </row>
-        </if>
+        <text bg="info">Please Press STRG+SHIFT+F9 to trigger the recalculation of the evaluation after opening the document</text>
       </col>
     </row>
-    <if expr="$_converter != 'True'">
-      <row>
-        <col>
-          <text bg="info">Please Press STRG+SHIFT+F9 to trigger the recalculation of the evaluation after opening the document</text>
-        </col>
-      </row>
-    </if>
   </snippet>
 
   <!-- Role -->
