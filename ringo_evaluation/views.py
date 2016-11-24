@@ -15,7 +15,7 @@ from ringo.views.request import (
 from ringo.lib.imexport import RecursiveRelationExporter
 from ringo.lib.helpers.appinfo import get_app_location
 from ringo.lib.helpers.format import get_local_datetime
-from ringo.lib.odfconv import get_converter
+# from ringo.lib.odfconv import get_converter
 from ringo.views.base.create import create
 from ringo.views.base.update import update
 from ringo.views.base import set_web_action_view
@@ -98,7 +98,18 @@ def evaluate(request):
     return _handle_evaluation_request(request, [item])
 
 
-def _handle_evaluation_request(request, items):
+def load_file(data):
+    if data.startswith("@"):
+        # Load the data from the filesystem.
+        # Path is @package:/path/to/file/relative/to/package/file
+        app = get_app_location(data.split(":")[0].strip("@"))
+        rel_path = data.split(":")[1]
+        data = os.path.join(app, rel_path)
+    return data
+
+
+def _handle_evaluation_request(request, items, context=None):
+    # context is always None if comming from Ringo.
     clazz = request.context.__model__
     modul = request.context.__modul__
     renderer = EvaluationDialogRenderer(request, clazz)
@@ -106,12 +117,14 @@ def _handle_evaluation_request(request, items):
     if (request.method == 'POST'
        and is_confirmed(request)
        and form.validate(request.params)):
+        import pdb
+        pdb.set_trace()
         # 1. Load evaluation file
         factory = Extension.get_item_factory()
         evaluation = factory.load(form.data["evaluations"])
         exportformat = form.data.get("exportformat", "ods")
         export_config = evaluation.configuration
-        spreadsheet = ezodf.opendoc(evaluation.data)
+        spreadsheet = ezodf.opendoc(load_file(evaluation.data))
 
         # 2. Export data
         exporter = RecursiveRelationExporter(clazz, export_config)
@@ -134,11 +147,11 @@ def _handle_evaluation_request(request, items):
             _fill_sheet(sheet, data, relation_config[relation])
 
         # 4. Convert and recalcualte the spreadsheet
-        converter = get_converter()
-        if converter.is_available():
-            spreadsheet_data = _convert_spreadsheet(spreadsheet, exportformat)
-        else:
-            spreadsheet_data = spreadsheet.tobytes()
+        # converter = get_converter()
+        # if converter.is_available():
+        #     spreadsheet_data = _convert_spreadsheet(spreadsheet, exportformat)
+        # else:
+        spreadsheet_data = spreadsheet.tobytes()
 
         # 5. Build response
         resp = request.response
