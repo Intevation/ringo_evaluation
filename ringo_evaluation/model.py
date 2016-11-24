@@ -19,8 +19,8 @@ class Evaluable(Mixin):
 
 class ExtensionFactory(BaseFactory):
 
-    def create(self, user=None):
-        new_item = BaseFactory.create(self, user)
+    def create(self, user=None, values=None):
+        new_item = BaseFactory.create(self, user, values)
         return new_item
 
 
