@@ -28,6 +28,9 @@ def includeme(config):
 
     """
     modul = register_modul(config, modul_config)
-    Extension._modul_id = modul.get_value("id")
-    translators.append(TranslationStringFactory('ringo_evaluation'))
-    config.add_translation_dirs('ringo_evaluation:locale/')
+    if modul:
+        Extension._modul_id = modul.get_value("id")
+        translators.append(TranslationStringFactory('ringo_evaluation'))
+        config.add_translation_dirs('ringo_evaluation:locale/')
+    return modul
+
