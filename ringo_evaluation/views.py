@@ -117,8 +117,6 @@ def _handle_evaluation_request(request, items, context=None):
     if (request.method == 'POST'
        and is_confirmed(request)
        and form.validate(request.params)):
-        import pdb
-        pdb.set_trace()
         # 1. Load evaluation file
         factory = Extension.get_item_factory()
         evaluation = factory.load(form.data["evaluations"])
