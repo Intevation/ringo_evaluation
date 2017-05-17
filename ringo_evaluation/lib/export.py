@@ -12,25 +12,37 @@ class RecursiveRelationExporter(Exporter):
     clazz acn be found in the dict under the key 'root'"""
 
     def __init__(self, clazz, config):
-        self._config
         if config:
-            config = ExportConfiguration(config).config
+            config = ExportConfiguration(config)
         else:
-            config = {"root": None}
+            config = ExportConfiguration({"root": None})
+        config = ExportConfiguration(["id", {"participant": ["surname", "forename", "gender"]}])
         super(RecursiveRelationExporter, self).__init__(clazz,
-                                                        fields=config["root"],
+                                                        fields=None,
                                                         serialized=False,
                                                         config=config)
         self._data = {}
 
     def perform(self, items):
         export = super(RecursiveRelationExporter, self).perform(items)
-        self._iter_export(export, self._config, "root")
+        for item in export:
+            self._transform_export(item, "root")
         self._remove_duplicates()
         return self._data
 
     def get_relation_config(self):
-        return self._config
+        return self._config.relations
+
+    def _transform_export(self, export, relation):
+        if relation not in self._data:
+            self._data[relation] = []
+        values = {}
+        for key in export:
+            if isinstance(export[key], dict):
+                self._transform_export(export[key], key)
+            else:
+                values[key] = export[key]
+        self._data[relation].append(values)
 
     def _iter_export(self, export, relation_config, relation):
         if self._data.get(relation) is None:

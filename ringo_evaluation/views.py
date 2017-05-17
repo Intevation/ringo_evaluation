@@ -12,7 +12,6 @@ from ringo.views.request import (
     is_confirmed,
     get_item_from_request
 )
-from ringo.lib.imexport import RecursiveRelationExporter
 from ringo.lib.helpers.appinfo import get_app_location
 from ringo.lib.helpers.format import get_local_datetime
 # from ringo.lib.odfconv import get_converter
@@ -22,6 +21,7 @@ from ringo.views.base import set_web_action_view
 from ringo.views.base.list_ import set_bundle_action_handler
 from ringo_evaluation.lib.renderer import EvaluationDialogRenderer
 from ringo_evaluation.model import Extension
+from ringo_evaluation.lib.export import RecursiveRelationExporter
 
 log = logging.getLogger(__name__)
 
