@@ -16,7 +16,6 @@ class RecursiveRelationExporter(Exporter):
             config = ExportConfiguration(config)
         else:
             config = ExportConfiguration({"root": None})
-        config = ExportConfiguration(["id", {"participant": ["surname", "forename", "gender"]}])
         super(RecursiveRelationExporter, self).__init__(clazz,
                                                         fields=None,
                                                         serialized=False,
