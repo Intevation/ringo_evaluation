@@ -121,7 +121,7 @@ def _handle_evaluation_request(request, items, context=None):
         factory = Extension.get_item_factory()
         evaluation = factory.load(form.data["evaluations"])
         exportformat = form.data.get("exportformat", "ods")
-        export_config = evaluation.configuration
+        export_config = evaluation.config_as_json
         spreadsheet = ezodf.opendoc(load_file(evaluation.data))
 
         # 2. Export data

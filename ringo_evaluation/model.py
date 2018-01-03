@@ -1,4 +1,5 @@
 import sqlalchemy as sa
+import json
 from ringo.model import Base
 from ringo.model.base import BaseItem, BaseFactory
 from ringo.model.mixins import Mixin, Owned, Meta
@@ -45,6 +46,10 @@ class Extension(Owned, Meta, BaseItem, Base):
 
     # Define relations to other tables
     modul = sa.orm.relationship("ModulItem", backref="evaluations")
+
+    @property
+    def config_as_json(self):
+        return json.loads(self.configuration, encoding=("utf-8"))
 
     @classmethod
     def get_item_factory(cls):

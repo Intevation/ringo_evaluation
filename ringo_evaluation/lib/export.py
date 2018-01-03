@@ -17,7 +17,6 @@ class RecursiveRelationExporter(Exporter):
         else:
             config = ExportConfiguration({"root": None})
         super(RecursiveRelationExporter, self).__init__(clazz,
-                                                        fields=None,
                                                         serialized=False,
                                                         config=config)
         self._data = {}
